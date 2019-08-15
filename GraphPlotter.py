@@ -18,6 +18,12 @@ from tkinter.colorchooser import *
 f = Figure(figsize=(5, 5), dpi=100)
 a = f.add_subplot(111)
 
+global elements
+global OPTIONS
+advanced = False
+elements = []
+OPTIONS = []
+
 lineColour = (0, 0, 0)
 errorColour = (0, 0, 255)
 lineStylesDict = {"─":"-", "•":".", ".":",", "┄":"--"}
@@ -90,7 +96,7 @@ class GUI:
         self.plotFrame = Frame(self.content, height=500, width=500, bg="white", relief=GROOVE, bd=2)
         self.plotFrame.grid(column=0, row=1, padx=(5,0), sticky=W)
 
-        self.inputFrame = Frame(self.content, height=500, width=250, bg="")
+        self.inputFrame = Frame(self.content, height=500, width=250, bg=ColourConvert((240,240,240)))
         self.inputFrame.grid(column=0, row=1, padx=(0,70), sticky=E)
 
         self.bottomFrame = Frame(self.content, height=5, width=785)
@@ -205,7 +211,7 @@ class GUI:
         self.ErrorLegendEntry.grid(column=1, row=16, columnspan=2, padx=(100, 0), sticky=W)
 
         # Bottom Buttons
-        self.advancedButton = ttk.Button(self.inputFrame, text="Advanced Settings", state="disabled")
+        self.advancedButton = ttk.Button(self.inputFrame, text="Show Advanced Settings", command=self.Advanced)
         self.advancedButton.grid(column=1, row=17, pady=(15,0))
 
         self.savePlotButton = ttk.Button(self.inputFrame, text="Save Plot", command=self.Save)
@@ -340,6 +346,43 @@ class GUI:
         if answer == "yes":
             root.quit()
 
+    def Advanced(self):
+        global advanced
+        if advanced == False:
+            advanced = True
+            root.geometry("1135x505")
+            self.advancedButton.config(text="Hide Advanced Settings")
+            self.advancedFrame = Frame(self.content, height=500, width=250, bg="red", background=ColourConvert((240,240,240)))
+            #TODO add advanced settings title in centre
+            self.advancedFrame.grid(column=1, row=1, padx=(0, 70), sticky=E)
+
+            self.ElementsTitle = Label(self.advancedFrame, text="Select Plot Element:")
+            self.ElementsTitle.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 5))
+
+            variable = StringVar(self.advancedFrame)
+            variable.set("Select")
+            self.ElemetsDropdown = ttk.OptionMenu(self.advancedFrame, variable, "Select Plot Element", *OPTIONS)
+            self.ElemetsDropdown.grid(column=0, row=1)
+
+            self.ElementAdd = ttk.Button(self.advancedFrame, text="Add", command=self.addPlotElement)
+            self.ElementAdd.grid(column=1, row=1)
+
+            self.ElementRemove = ttk.Button(self.advancedFrame, text="Remove")
+            self.ElementRemove.grid(column=2, row=1)
+        else:
+            advanced = False
+            root.geometry("735x505")
+            self.advancedButton.config(text="Show Advanced Settings")
+            self.advancedFrame.grid_forget()
+
+            #TODO make the OPTIONS list update without requiring advanced button press
+
+    def addPlotElement(self):
+        import random
+        elements.append(PlotElement(root, str(random.randint(0,100)), "ooh"))
+        for element in elements:
+            OPTIONS.append(element.name)
+
     def updateLineButtonColour(self):
         global lineColour
         prev = lineColour
@@ -405,6 +448,11 @@ class GUI:
         self.PlotMenu.add_command(label="Reset Colours", command=self.ResetColours)
         self.PlotMenu.add_command(label="Reset Legend", command=self.ResetLegend)
         self.menu.add_cascade(label="Plot",menu=self.PlotMenu)
+
+class PlotElement:
+    def __init__(self, root, name, type):
+        self.name = name
+        self.type = type
 
 
 def ColourConvert(rgb):
