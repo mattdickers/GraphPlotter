@@ -1,6 +1,8 @@
 import numpy as np
 import scipy as sp
 import csv
+import zipfile
+import os
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -277,8 +279,9 @@ class GUI:
     def Save(self):
         try:
             xs
-            file = asksaveasfilename(title="Save Graph", filetypes=(("PNG", "*.png"), ("All files", "*")))
-            file+=".png"
+            filePath = asksaveasfilename(title="Save Graph", filetypes=(("PNG and SVG", "*.png"), ("All files", "*")))
+            pngFile = filePath + ".png"
+            svgFile = filePath + ".svg"
 
             plt.cla()
             plt.plot(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(lineColour), label=DataLegendEntry.get())
@@ -296,8 +299,15 @@ class GUI:
             if WithErrors.get() == 1 and ErrorLegend.get() == 1:
                 plt.legend()
 
-            plt.savefig(file)
+            zip = zipfile.ZipFile(pngFile.replace(".png", "")+".zip", mode='w')
+            plt.savefig(pngFile)
+            plt.savefig(svgFile)
+            zip.write(pngFile, os.path.basename(pngFile))
+            zip.write(svgFile, os.path.basename(svgFile))
+            os.remove(pngFile)
+            os.remove(svgFile)
             tkinter.messagebox.showinfo("Graph Saved", "The graph was successfully saved.")
+            zip.close()
         except NameError:
             tkinter.messagebox.showerror("Save Error",
                                          "No graph has been plotted. Please plot a graph and try again.")
