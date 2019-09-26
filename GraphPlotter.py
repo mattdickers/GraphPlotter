@@ -213,7 +213,7 @@ class GUI:
         self.ErrorLegendEntry.grid(column=1, row=16, columnspan=2, padx=(100, 0), sticky=W)
 
         # Bottom Buttons
-        self.advancedButton = ttk.Button(self.inputFrame, text="Show Advanced Settings", command=self.Advanced, state="disabled")
+        self.advancedButton = ttk.Button(self.inputFrame, text="Show Advanced Settings", command=self.Advanced)
         self.advancedButton.grid(column=1, row=17, pady=(15,0))
 
         self.savePlotButton = ttk.Button(self.inputFrame, text="Save Plot", command=self.Save)
