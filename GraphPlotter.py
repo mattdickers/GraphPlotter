@@ -358,6 +358,7 @@ class GUI:
 
     def Advanced(self):
         global advanced
+        global variable
         if advanced == False:
             advanced = True
             root.geometry("1135x505")
@@ -377,7 +378,7 @@ class GUI:
             self.ElementAdd = ttk.Button(self.advancedFrame, text="Add", command=self.addPlotElement)
             self.ElementAdd.grid(column=1, row=1)
 
-            self.ElementRemove = ttk.Button(self.advancedFrame, text="Remove")
+            self.ElementRemove = ttk.Button(self.advancedFrame, text="Remove", command=self.removePlotElement)
             self.ElementRemove.grid(column=2, row=1)
         else:
             advanced = False
@@ -385,13 +386,19 @@ class GUI:
             self.advancedButton.config(text="Show Advanced Settings")
             self.advancedFrame.grid_forget()
 
-            #TODO make the OPTIONS list update without requiring advanced button press
+    def updateDropdownList(self):
+        menu = self.ElemetsDropdown["menu"]
+        menu.delete(0, "end")
+        for string in OPTIONS:
+            menu.add_command(label=string, command=lambda value=string: variable.set(value))
 
     def addPlotElement(self):
-        import random
-        elements.append(PlotElement(root, str(random.randint(0,100)), "ooh"))
-        for element in elements:
-            OPTIONS.append(element.name)
+        OPTIONS.append(len(OPTIONS) + 1)
+        self.updateDropdownList()
+
+    def removePlotElement(self):
+        OPTIONS.pop()
+        self.updateDropdownList()
 
     def updateLineButtonColour(self):
         global lineColour
