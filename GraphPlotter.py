@@ -21,10 +21,10 @@ f = Figure(figsize=(5, 5), dpi=100)
 a = f.add_subplot(111)
 
 global elements
-global OPTIONS
+global elementNames
 advanced = False
 elements = []
-OPTIONS = []
+elementNames = []
 
 lineColour = (0, 0, 0)
 errorColour = (0, 0, 255)
@@ -213,8 +213,9 @@ class GUI:
         self.ErrorLegendEntry.grid(column=1, row=16, columnspan=2, padx=(100, 0), sticky=W)
 
         # Bottom Buttons
-        self.advancedButton = ttk.Button(self.inputFrame, text="Show Advanced Settings", command=self.Advanced)
+        self.advancedButton = ttk.Button(self.inputFrame, text="Show Advanced Settings", command=self.Advanced, width=21.5)
         self.advancedButton.grid(column=1, row=17, pady=(15,0))
+        self.advancedButton.config(width=21.5)
 
         self.savePlotButton = ttk.Button(self.inputFrame, text="Save Plot", command=self.Save)
         self.savePlotButton.grid(column=1, row=18, pady=(5,0))
@@ -362,7 +363,7 @@ class GUI:
         if advanced == False:
             advanced = True
             root.geometry("1135x505")
-            self.advancedButton.config(text="Hide Advanced Settings")
+            self.advancedButton.config(text="Hide Advanced Settings", width=21.5)
             self.advancedFrame = Frame(self.content, height=500, width=250, bg="red", background=ColourConvert((240,240,240)))
             #TODO add advanced settings title in centre
             self.advancedFrame.grid(column=1, row=1, padx=(0, 70), sticky=E)
@@ -372,9 +373,11 @@ class GUI:
 
             variable = StringVar(self.advancedFrame)
             variable.set("Select")
-            self.ElemetsDropdown = ttk.OptionMenu(self.advancedFrame, variable, "Select Plot Element", *OPTIONS)
-            self.ElemetsDropdown.grid(column=0, row=1)
+            self.ElementsDropdown = ttk.OptionMenu(self.advancedFrame, variable, "Select Plot Element", *elementNames)
+            self.ElementsDropdown.grid(column=0, row=1)
+            self.ElementsDropdown.config(width=17)
 
+            #TODO update this to be edit element, and then add seperate button for add element
             self.ElementAdd = ttk.Button(self.advancedFrame, text="Add", command=self.addPlotElement)
             self.ElementAdd.grid(column=1, row=1)
 
@@ -383,21 +386,24 @@ class GUI:
         else:
             advanced = False
             root.geometry("735x505")
-            self.advancedButton.config(text="Show Advanced Settings")
+            self.advancedButton.config(text="Show Advanced Settings", width=21.5)
             self.advancedFrame.grid_forget()
 
     def updateDropdownList(self):
-        menu = self.ElemetsDropdown["menu"]
+        menu = self.ElementsDropdown["menu"]
         menu.delete(0, "end")
-        for string in OPTIONS:
+        for string in elementNames:
             menu.add_command(label=string, command=lambda value=string: variable.set(value))
 
     def addPlotElement(self):
-        OPTIONS.append(len(OPTIONS) + 1)
+        #TODO add full UI for element creation
+        element = PlotElement(root, len(elementNames) + 1, "meme")
+        elements.append(element)
+        elementNames.append(element.name)
         self.updateDropdownList()
 
     def removePlotElement(self):
-        OPTIONS.pop()
+        elementNames.pop()
         self.updateDropdownList()
 
     def updateLineButtonColour(self):
@@ -470,6 +476,7 @@ class PlotElement:
     def __init__(self, root, name, type):
         self.name = name
         self.type = type
+        #TODO check for the element type, and then store the contents of each element data piece, such as equation, lenght of line etc.
 
 
 def ColourConvert(rgb):
@@ -509,5 +516,7 @@ root.resizable(width=False, height=False)
 
 root.pack_propagate(0)
 root.grid_propagate(0)
+
+root.update()
 
 root.mainloop()
