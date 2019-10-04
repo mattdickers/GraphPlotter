@@ -25,6 +25,7 @@ global elementNames
 advanced = False
 elements = []
 elementNames = []
+elementTypes = ["Data", "Plot Equation", "Line", "Text"]
 
 lineColour = (0, 0, 0)
 errorColour = (0, 0, 255)
@@ -365,46 +366,115 @@ class GUI:
             root.geometry("1135x505")
             self.advancedButton.config(text="Hide Advanced Settings", width=21.5)
             self.advancedFrame = Frame(self.content, height=500, width=250, bg="red", background=ColourConvert((240,240,240)))
-            #TODO add advanced settings title in centre
-            self.advancedFrame.grid(column=1, row=1, padx=(0, 70), sticky=E)
+            self.elementFrame = Frame(self.content, height=425, width=187, background=ColourConvert((240,240,240)))
+            self.advancedFrame.grid(column=1, row=1, padx=(0, 70), pady=(0,405), sticky=E)
+            self.elementFrame.grid(column=1, row=1, padx=(0, 70), pady=(75,0))
 
             self.ElementsTitle = Label(self.advancedFrame, text="Select Plot Element:")
             self.ElementsTitle.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 5))
 
-            variable = StringVar(self.advancedFrame)
-            variable.set("Select")
-            self.ElementsDropdown = ttk.OptionMenu(self.advancedFrame, variable, "Select Plot Element", *elementNames)
+            self.ElementNum = Label(self.advancedFrame, text=str(len(elementNames)) + " Plot Elements")
+            self.ElementNum.grid(column=0, row=2, columnspan=3)
+
+            global selectedElement
+            selectedElement = StringVar(self.advancedFrame)
+            selectedElement.set("Select")
+            self.ElementsDropdown = ttk.OptionMenu(self.advancedFrame, selectedElement, "Select Plot Element", *elementNames)
             self.ElementsDropdown.grid(column=0, row=1)
             self.ElementsDropdown.config(width=17)
 
-            #TODO update this to be edit element, and then add seperate button for add element
-            self.ElementAdd = ttk.Button(self.advancedFrame, text="Add", command=self.addPlotElement)
+            self.ElementAdd = ttk.Button(self.advancedFrame, text="Add", command=self.createPlotElement)
             self.ElementAdd.grid(column=1, row=1)
 
             self.ElementRemove = ttk.Button(self.advancedFrame, text="Remove", command=self.removePlotElement)
             self.ElementRemove.grid(column=2, row=1)
+
         else:
             advanced = False
             root.geometry("735x505")
             self.advancedButton.config(text="Show Advanced Settings", width=21.5)
             self.advancedFrame.grid_forget()
+            self.elementFrame.grid_forget()
+
+        if len(elementNames) == 0:
+            self.noElements = Label(self.elementFrame, text="No Plot Element Selected")
+            self.noElements.grid(column=0, row=0)
 
     def updateDropdownList(self):
         menu = self.ElementsDropdown["menu"]
         menu.delete(0, "end")
         for string in elementNames:
-            menu.add_command(label=string, command=lambda value=string: variable.set(value))
+            menu.add_command(label=string, command=lambda value=string: selectedElement.set(value))
+
+    def createPlotElement(self):
+        self.clearElementFrame(self.elementFrame)
+        self.elementFrame.grid_configure(pady=(0, 220))
+        # New Element:
+        self.newElementLabel = Label(self.elementFrame, text="Create New Plot Element:")
+        self.newElementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(10, 5), padx=(0, 147))
+
+        self.elementNameLabel = Label(self.elementFrame, text="Element Name:")
+        self.elementNameLabel.grid(column=0, row=2, columnspan=2, padx=(0, 150))
+
+        global elementName
+        elementName = StringVar()
+        self.elementName = ttk.Entry(self.elementFrame, width=16, textvariable=elementName)
+        self.elementName.grid(column=1, row=2, columnspan=2, padx=(0, 0), sticky=W)
+
+        self.elementTypeLaabel = Label(self.elementFrame, text="Element Type:")
+        self.elementTypeLaabel.grid(column=0, row=3, columnspan=2, padx=(0, 150), pady=(5, 5))
+
+        global elementType
+        elementType = StringVar(self.elementFrame)
+        elementType.set("Select")
+        self.elementType = ttk.OptionMenu(self.elementFrame, elementType, "Element Type", *elementTypes)
+        self.elementType.grid(column=1, row=3, columnspan=2, padx=(0, 0), pady=(5, 5), sticky=W)
+        self.elementType.config(width=11.5)
+
+        self.addElementButton = ttk.Button(self.elementFrame, text="Add Element", command=self.addPlotElement)
+        self.addElementButton.grid(column=0, row=4, columnspan=3)
 
     def addPlotElement(self):
-        #TODO add full UI for element creation
-        element = PlotElement(root, len(elementNames) + 1, "meme")
-        elements.append(element)
-        elementNames.append(element.name)
-        self.updateDropdownList()
+        if elementName.get() == "" and elementType.get() == "Element Type":
+            tkinter.messagebox.showerror("Element Error",
+                                         "Please specify an element name and type.")
+        elif elementName.get() == "":
+            tkinter.messagebox.showerror("Element Error",
+                                         "Please Specify an element name.")
+        elif elementType.get() == "Element Type":
+            tkinter.messagebox.showerror("Element Error",
+                                         "Please specify an element type.")
+        else:
+            element = PlotElement(root, elementName.get(), elementType.get())
+            elements.append(element)
+            elementNames.append(element.name)
+            self.updateDropdownList()
+            self.ElementNum.config(text=str(len(elementNames)) + " Plot Elements")
+
+    def clearElementFrame(self, frame):
+        for widget in frame.winfo_children():
+            widget.destroy()
 
     def removePlotElement(self):
-        elementNames.pop()
-        self.updateDropdownList()
+        print(elementNames)
+        print(elements)
+        if len(elementNames) == 0:
+            tkinter.messagebox.showerror("Element Error",
+                                         "There no elements to remove.")
+        elif selectedElement.get() == "Select Plot Element":
+            tkinter.messagebox.showerror("Element Error",
+                                         "No element selected.")
+        else:
+            answer = tkinter.messagebox.askquestion("Do you want to remove the selected element?",
+                                                    "Are you sure you want to remove the selected element?")
+            if answer == "yes":
+                index = elementNames.index(selectedElement.get())
+                elementNames.remove(selectedElement.get())
+                elements.pop(index)
+                self.updateDropdownList()
+                self.ElementNum.config(text=str(len(elementNames)) + " Plot Elements")
+        print(elementNames)
+        print(elements)
 
     def updateLineButtonColour(self):
         global lineColour
