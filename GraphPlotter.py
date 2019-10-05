@@ -23,7 +23,7 @@ a = f.add_subplot(111)
 global elements
 global elementNames
 advanced = False
-elements = []
+elements = {}
 elementNames = []
 elementTypes = ["Data", "Plot Equation", "Line", "Text"]
 
@@ -407,7 +407,7 @@ class GUI:
             menu.add_command(label=string, command=lambda value=string: selectedElement.set(value))
 
     def createPlotElement(self):
-        self.clearElementFrame(self.elementFrame)
+        self.clearElementFrame()
         self.elementFrame.grid_configure(pady=(0, 220))
         # New Element:
         self.newElementLabel = Label(self.elementFrame, text="Create New Plot Element:")
@@ -446,18 +446,17 @@ class GUI:
                                          "Please specify an element type.")
         else:
             element = PlotElement(root, elementName.get(), elementType.get())
-            elements.append(element)
             elementNames.append(element.name)
+            elements[element.name] = element
             self.updateDropdownList()
             self.ElementNum.config(text=str(len(elementNames)) + " Plot Elements")
+            self.clearElementFrame() #TODO change to self.displayElementEdit when it is written, and add clearElement to that function
 
-    def clearElementFrame(self, frame):
-        for widget in frame.winfo_children():
+    def clearElementFrame(self):
+        for widget in self.elementFrame.winfo_children():
             widget.destroy()
 
     def removePlotElement(self):
-        print(elementNames)
-        print(elements)
         if len(elementNames) == 0:
             tkinter.messagebox.showerror("Element Error",
                                          "There no elements to remove.")
@@ -468,13 +467,10 @@ class GUI:
             answer = tkinter.messagebox.askquestion("Do you want to remove the selected element?",
                                                     "Are you sure you want to remove the selected element?")
             if answer == "yes":
-                index = elementNames.index(selectedElement.get())
                 elementNames.remove(selectedElement.get())
-                elements.pop(index)
+                del elements[selectedElement.get()]
                 self.updateDropdownList()
                 self.ElementNum.config(text=str(len(elementNames)) + " Plot Elements")
-        print(elementNames)
-        print(elements)
 
     def updateLineButtonColour(self):
         global lineColour
