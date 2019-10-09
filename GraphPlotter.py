@@ -25,7 +25,7 @@ global elementNames
 advanced = False
 elements = {}
 elementNames = []
-elementTypes = ["Data", "Plot Equation", "Line", "Text"]
+elementTypes = ["Data", "Plot Equation", "Line", "Text", "MultiPlot"]
 
 lineColour = (0, 0, 0)
 errorColour = (0, 0, 255)
@@ -376,10 +376,9 @@ class GUI:
             self.ElementNum = Label(self.advancedFrame, text=str(len(elementNames)) + " Plot Elements")
             self.ElementNum.grid(column=0, row=2, columnspan=3)
 
-            global selectedElement
-            selectedElement = StringVar(self.advancedFrame)
-            selectedElement.set("Select")
-            self.ElementsDropdown = ttk.OptionMenu(self.advancedFrame, selectedElement, "Select Plot Element", *elementNames)
+            self.selectedElement = StringVar(self.advancedFrame)
+            self.selectedElement.set("Select Element")
+            self.ElementsDropdown = ttk.OptionMenu(self.advancedFrame, self.selectedElement, "Select Element", *elementNames, command=self.getDropdownSelectUpdate)
             self.ElementsDropdown.grid(column=0, row=1)
             self.ElementsDropdown.config(width=17)
 
@@ -404,7 +403,8 @@ class GUI:
         menu = self.ElementsDropdown["menu"]
         menu.delete(0, "end")
         for string in elementNames:
-            menu.add_command(label=string, command=lambda value=string: selectedElement.set(value))
+            menu.add_command(label=string,
+                             command=tkinter._setit(self.selectedElement, string, self.getDropdownSelectUpdate))
 
     def createPlotElement(self):
         self.clearElementFrame()
@@ -444,13 +444,18 @@ class GUI:
         elif elementType.get() == "Element Type":
             tkinter.messagebox.showerror("Element Error",
                                          "Please specify an element type.")
+        elif elementName.get() in elementNames:
+            tkinter.messagebox.showerror("Element Error",
+                                         "An element with this name already exists.")
         else:
             element = PlotElement(root, elementName.get(), elementType.get())
             elementNames.append(element.name)
+            self.newElementName = element.name
             elements[element.name] = element
             self.updateDropdownList()
             self.ElementNum.config(text=str(len(elementNames)) + " Plot Elements")
-            self.clearElementFrame() #TODO change to self.displayElementEdit when it is written, and add clearElement to that function
+            self.selectedElement.set(element.name)
+            self.displayElementEdit()
 
     def clearElementFrame(self):
         for widget in self.elementFrame.winfo_children():
@@ -460,17 +465,24 @@ class GUI:
         if len(elementNames) == 0:
             tkinter.messagebox.showerror("Element Error",
                                          "There no elements to remove.")
-        elif selectedElement.get() == "Select Plot Element":
+        elif self.selectedElement.get() == "Select Plot Element":
             tkinter.messagebox.showerror("Element Error",
                                          "No element selected.")
         else:
             answer = tkinter.messagebox.askquestion("Do you want to remove the selected element?",
                                                     "Are you sure you want to remove the selected element?")
             if answer == "yes":
-                elementNames.remove(selectedElement.get())
-                del elements[selectedElement.get()]
+                elementNames.remove(self.selectedElement.get())
+                del elements[self.selectedElement.get()]
                 self.updateDropdownList()
                 self.ElementNum.config(text=str(len(elementNames)) + " Plot Elements")
+
+    def getDropdownSelectUpdate(self, variable):
+        self.displayElementEdit()
+
+    def displayElementEdit(self):
+        self.clearElementFrame()
+        print(self.selectedElement.get())
 
     def updateLineButtonColour(self):
         global lineColour
