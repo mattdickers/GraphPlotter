@@ -226,6 +226,9 @@ class GUI:
         canvas.draw()
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
+        self.elementUIload = {"Data":self.elementData, "Plot Equation":self.elementEquation,
+                              "Line":self.elementLine, "Text":self.elementText, "MultiPlot":self.elementMulti}
+
     def New(self):
         global path
         answer = tkinter.messagebox.askquestion("Do you want to close current graph?",
@@ -235,6 +238,7 @@ class GUI:
             self.ResetLimits()
             self.ResetColours()
             self.ResetLegend()
+            self.ResetElements()
             ErrorLegend.set(0)
             self.legendCheck()
             path = ""
@@ -338,6 +342,17 @@ class GUI:
         self.DataLegendEntry.delete(0, END)
         self.ErrorLegendEntry.delete(0, END)
 
+    def ResetElements(self):
+        try:
+            for element in elementNames:
+                print(element)
+                del elements[element]
+            elementNames.clear()
+            self.updateDropdownList()
+            self.ElementNum.config(text=str(len(elementNames)) + " Plot Elements")
+        except AttributeError:
+            pass
+
     def Help(self):
         instructionsWindow = Toplevel()
         instructionsWindow.title("Help")
@@ -388,6 +403,20 @@ class GUI:
             self.ElementRemove = ttk.Button(self.advancedFrame, text="Remove", command=self.removePlotElement)
             self.ElementRemove.grid(column=2, row=1)
 
+            self.statsFrame = Frame(self.content, height=100, width = 250, background=ColourConvert((240,240,240)))
+            self.statsFrame.grid(column=1, row=1, padx=(0, 70), pady=(300, 0))
+
+            self.statsLabel = Label(self.statsFrame, text="Plot Statistics:")
+            self.statsLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(10, 5), padx=(0, 210))
+
+            self.xMeanLabel = Label(self.statsFrame, text="x Axis Mean:")
+            self.xMeanLabel.grid(column=0, row=1)
+
+            #TODO: add the correct formatting for this section^
+
+            self.xMean = Label(self.statsFrame, text="No Data")
+            self.xMean.grid(column=1, row=1)
+
         else:
             advanced = False
             root.geometry("735x505")
@@ -395,7 +424,7 @@ class GUI:
             self.advancedFrame.grid_forget()
             self.elementFrame.grid_forget()
 
-        if len(elementNames) == 0:
+        if self.selectedElement.get() == "Select Element":
             self.noElements = Label(self.elementFrame, text="No Plot Element Selected")
             self.noElements.grid(column=0, row=0)
 
@@ -482,7 +511,23 @@ class GUI:
 
     def displayElementEdit(self):
         self.clearElementFrame()
-        print(self.selectedElement.get())
+        element = elements[self.selectedElement.get()]
+        self.elementUIload[element.type]()
+
+    def elementData(self):
+        print("Data Plot Element")
+
+    def elementEquation(self):
+        print("Equation Plot Element")
+
+    def elementLine(self):
+        print("Line Plot Element")
+
+    def elementText(self):
+        print("Text Plot Element")
+
+    def elementMulti(self):
+        print("Muiltiplot Element")
 
     def updateLineButtonColour(self):
         global lineColour
