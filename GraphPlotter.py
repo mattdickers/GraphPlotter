@@ -25,10 +25,10 @@ global elementNames
 advanced = False
 elements = {}
 elementNames = []
-elementTypes = ["Data", "Plot Equation", "Line", "Text", "MultiPlot"]
+elementTypes = ["Data", "Plot Equation", "Line", "Text", "Fit Function", "MultiPlot"]
 
-lineColour = (0, 0, 0)
-errorColour = (0, 0, 255)
+global buttonColours
+buttonColours = {"line":(0, 0, 0), "errorBar":(0, 0, 255), "text":(0, 0, 0)}
 lineStylesDict = {"─":"-", "•":".", ".":",", "┄":"--"}
 
 def animateGraph(interval):
@@ -61,10 +61,28 @@ def animateGraph(interval):
                 pass
 
     try:
-        a.plot(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(lineColour), label=DataLegendEntry.get())
-        if WithErrors.get() == 1:
-            a.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
-                       color=RGBtoFloat(errorColour), label=ErrorLegendEntry.get())
+        if XLog.get() == 1 and YLog.get() == 1:
+            a.loglog(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]), label=DataLegendEntry.get())
+            if WithErrors.get() == 1:
+                a.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                           color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+        elif XLog.get() == 1:
+            a.semilogx(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]), label=DataLegendEntry.get())
+            if WithErrors.get() == 1:
+                a.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                           color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+        elif YLog.get() == 1:
+            a.semilogy(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                       label=DataLegendEntry.get())
+            if WithErrors.get() == 1:
+                a.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                           color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+        else:
+            a.plot(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                       label=DataLegendEntry.get())
+            if WithErrors.get() == 1:
+                a.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                           color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
     except (UnboundLocalError, NameError):
         pass
 
@@ -129,7 +147,7 @@ class GUI:
 
         global xLimit
         xLimit = StringVar()
-        self.xLimit = ttk.Entry(self.inputFrame, width=16, textvariable=xLimit)
+        self.xLimit = ttk.Entry(self.inputFrame, width=7, textvariable=xLimit)
         self.xLimit.grid(column=1, row=6, columnspan=2, padx=(100,0), sticky=W)
 
         self.yLimitLabel = Label(self.inputFrame, text="y Limit:")
@@ -137,8 +155,18 @@ class GUI:
 
         global yLimit
         yLimit = StringVar()
-        self.yLimit = ttk.Entry(self.inputFrame, width=16, textvariable=yLimit)
+        self.yLimit = ttk.Entry(self.inputFrame, width=7, textvariable=yLimit)
         self.yLimit.grid(column=1, row=7, columnspan=2, padx=(100, 0), pady=(5,5), sticky=W)
+
+        global XLog
+        XLog = IntVar()
+        self.xLog = ttk.Checkbutton(self.inputFrame, text="Log x", variable=XLog,)
+        self.xLog.grid(column=1, row=6, padx=(150, 0))
+
+        global YLog
+        YLog = IntVar()
+        self.yLog = ttk.Checkbutton(self.inputFrame, text="Log y", variable=YLog, )
+        self.yLog.grid(column=1, row=7, padx=(150, 0))
 
         # Label Selection:
         self.dataLabel = Label(self.inputFrame, text="Title and Axes Labels:")
@@ -175,8 +203,8 @@ class GUI:
         self.lineColourLabel = Label(self.inputFrame, text="Line Style:")
         self.lineColourLabel.grid(column=0, row=13, columnspan=2, padx=(0, 100))
 
-        self.lineColourButton = Button(self.inputFrame, width=3, background = ColourConvert(lineColour), borderwidth=1, activebackground=ColourConvert(lineColour), relief="flat",
-                                       command=self.updateLineButtonColour)
+        self.lineColourButton = Button(self.inputFrame, width=3, background = ColourConvert(buttonColours["line"]), borderwidth=1, activebackground=ColourConvert(buttonColours["line"]), relief="flat")
+        self.lineColourButton.config(command=lambda: self.updateButtonColour(self.lineColourButton, "line"))
         self.lineColourButton.grid(column=1, row=13, columnspan=2, padx=(100,0),sticky=W)
 
         global lineStyle
@@ -188,8 +216,8 @@ class GUI:
         self.errorColourLabel = Label(self.inputFrame, text="Error Bar Style:", state="disabled")
         self.errorColourLabel.grid(column=0, row=14, columnspan=2, padx=(0, 100), pady=(5,0))
 
-        self.errorColourButton = Button(self.inputFrame, width=3, background = ColourConvert((160,160,160)), borderwidth=1, activebackground=ColourConvert(errorColour), relief="flat",
-                                        command=self.updateErrorButtonColour, state="disabled")
+        self.errorColourButton = Button(self.inputFrame, width=3, background = ColourConvert((160,160,160)), borderwidth=1, activebackground=ColourConvert(buttonColours["errorBar"]), relief="flat")
+        self.errorColourButton.config(command=lambda: self.updateButtonColour(self.errorColourButton, "errorBar"))
         self.errorColourButton.grid(column=1, row=14, columnspan=2, padx=(100,0), sticky=W, pady=(5,0))
 
         global ErrorLegend
@@ -227,7 +255,7 @@ class GUI:
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
         self.elementUIload = {"Data":self.elementData, "Plot Equation":self.elementEquation,
-                              "Line":self.elementLine, "Text":self.elementText, "MultiPlot":self.elementMulti}
+                              "Line":self.elementLine, "Text":self.elementText, "Fit Function":self.elementFuncFit, "MultiPlot":self.elementMulti}
 
     def New(self):
         global path
@@ -290,10 +318,30 @@ class GUI:
             svgFile = filePath + ".svg"
 
             plt.cla()
-            plt.plot(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(lineColour), label=DataLegendEntry.get())
-            if WithErrors.get() == 1:
-                plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
-                           color=RGBtoFloat(errorColour), label=ErrorLegendEntry.get())
+            if XLog.get() == 1 and YLog.get() == 1:
+                plt.loglog(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                         label=DataLegendEntry.get())
+                if WithErrors.get() == 1:
+                    plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                               color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+            elif XLog.get() == 1:
+                plt.semilogx(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                           label=DataLegendEntry.get())
+                if WithErrors.get() == 1:
+                    plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                               color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+            elif YLog.get() == 1:
+                plt.semilogy(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                           label=DataLegendEntry.get())
+                if WithErrors.get() == 1:
+                    plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                               color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+            else:
+                plt.plot(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                       label=DataLegendEntry.get())
+                if WithErrors.get() == 1:
+                    plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                               color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
             plt.title(TitleEntry.get())
             plt.xlabel(xEntry.get())
             plt.ylabel(yEntry.get())
@@ -328,15 +376,15 @@ class GUI:
         self.yLimit.delete(0, END)
 
     def ResetColours(self):
-        global lineColour
-        global errorColour
-        lineColour = (0, 0, 0)
-        errorColour = (0, 0, 255)
-        self.lineColourButton.config(background=ColourConvert(lineColour), activebackground=ColourConvert(lineColour))
+        buttonColours["line"] = (0, 0, 0)
+        buttonColours["errorBar"] = (0, 0, 255)
+        self.lineColourButton.config(background=ColourConvert(buttonColours["line"]),
+                                     activebackground=ColourConvert(buttonColours["line"]))
         if WithErrors.get() == 0:
             self.errorColourButton.config(state="disabled", background=ColourConvert((160,160,160)))
         elif WithErrors.get() == 1:
-            self.errorColourButton.config(background=ColourConvert(errorColour), activebackground=ColourConvert(errorColour))
+            self.errorColourButton.config(background=ColourConvert(buttonColours["errorBar"]),
+                                          activebackground=ColourConvert(buttonColours["errorBar"]))
 
     def ResetLegend(self):
         self.DataLegendEntry.delete(0, END)
@@ -423,6 +471,7 @@ class GUI:
             self.advancedButton.config(text="Show Advanced Settings", width=21.5)
             self.advancedFrame.grid_forget()
             self.elementFrame.grid_forget()
+            self.statsFrame.grid_forget()
 
         if self.selectedElement.get() == "Select Element":
             self.noElements = Label(self.elementFrame, text="No Plot Element Selected")
@@ -515,39 +564,83 @@ class GUI:
         self.elementUIload[element.type]()
 
     def elementData(self):
-        print("Data Plot Element")
+        self.elementLabel = Label(self.elementFrame, text="Data Element:")
+        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 75), padx=(0, 205))
 
     def elementEquation(self):
-        print("Equation Plot Element")
+        self.elementLabel = Label(self.elementFrame, text="Equation Plot:")
+        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 75), padx=(0, 205))
 
     def elementLine(self):
-        print("Line Plot Element")
+        self.elementLabel = Label(self.elementFrame, text="Line Element:")
+        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 75), padx=(0, 205))
 
     def elementText(self):
-        print("Text Plot Element")
+        self.elementLabel = Label(self.elementFrame, text="Text Element:")
+        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(10, 5), padx=(0, 147))
+
+        self.elementName = Label(self.elementFrame, text="Name:")
+        self.elementName.grid(column=0, row=2, columnspan=2, padx=(0, 150))
+
+        self.elementNameText = Label(self.elementFrame, text=self.selectedElement.get())
+        self.elementNameText.grid(column=1, row=2, columnspan=2, padx=(0, 0), sticky=W)
+
+        self.elementLabelText = Label(self.elementFrame, text="Text:")
+        self.elementLabelText.grid(column=0, row=3, columnspan=2, padx=(0, 150), pady=(5, 5))
+
+        global elementText
+        elementText = StringVar()
+        self.elementTextEntry = ttk.Entry(self.elementFrame, width=16, textvariable=elementText)
+        self.elementTextEntry.grid(column=1, row=3, columnspan=2, padx=(0, 0), sticky=W)
+
+        self.elementLabelTextX = Label(self.elementFrame, text="x Position:")
+        self.elementLabelTextX.grid(column=0, row=4, columnspan=2, padx=(0, 150))
+
+        global elementTextX
+        elementTextX = StringVar()
+        self.elementTextEntryX = ttk.Entry(self.elementFrame, width=16, textvariable=elementTextX)
+        self.elementTextEntryX.grid(column=1, row=4, columnspan=2, padx=(0, 0), sticky=W)
+
+        self.elementLabelTextY = Label(self.elementFrame, text="y Position:")
+        self.elementLabelTextY.grid(column=0, row=5, columnspan=2, padx=(0, 150), pady=(5, 5))
+
+        global elementTextY
+        elementTextY = StringVar()
+        self.elementTextEntryY = ttk.Entry(self.elementFrame, width=16, textvariable=elementTextY)
+        self.elementTextEntryY.grid(column=1, row=5, columnspan=2, padx=(0, 0), sticky=W)
+
+        self.elementTextColourButton = Button(self.inputFrame, width=3, background=ColourConvert(buttonColours["line"]),
+                                       borderwidth=1, activebackground=ColourConvert(buttonColours["line"]),
+                                       relief="flat")
+        self.elementTextColourButton.config(command=lambda: self.updateButtonColour(self.elementTextColourButton, "line"))
+        self.elementTextColourButton.grid(column=1, row=13, columnspan=2, padx=(100, 0), sticky=W)
+
+
+
+    def elementFuncFit(self):
+        self.elementLabel = Label(self.elementFrame, text="Function Fit:")
+        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 75), padx=(0, 210))
 
     def elementMulti(self):
-        print("Muiltiplot Element")
+        self.elementLabel = Label(self.elementFrame, text="MultiPlot:")
+        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 75), padx=(0, 215))
 
-    def updateLineButtonColour(self):
-        global lineColour
-        prev = lineColour
-        try:
-            lineColour = GetColour()
-            self.lineColourButton.config(background=ColourConvert(lineColour), activebackground=ColourConvert(lineColour))
-        except TypeError:
-            lineColour = prev
-            self.lineColourButton.config(background=ColourConvert(lineColour), activebackground=ColourConvert(lineColour))
-
-    def updateErrorButtonColour(self):
-        global errorColour
-        prev = errorColour
-        try:
-            errorColour = GetColour()
-            self.errorColourButton.config(background=ColourConvert(errorColour), activebackground=ColourConvert(errorColour))
-        except TypeError:
-            errorColour = prev
-            self.errorColourButton.config(background=ColourConvert(errorColour), activebackground=ColourConvert(errorColour))
+    def updateButtonColour(self, button, function, isElement):
+        if not isElement:
+            colour = buttonColours[function]
+            prev = colour
+            try:
+                colour = GetColour()
+                button.config(background=ColourConvert(colour),
+                                             activebackground=ColourConvert(colour))
+                buttonColours[function] = colour
+            except TypeError:
+                colour = prev
+                button.config(background=ColourConvert(colour),
+                                             activebackground=ColourConvert(colour))
+        else:
+            pass
+        #TODO if is element, set colour to the colour defined in the element object, and save for that
 
     def errorBarCheck(self):
         if WithErrors.get() == 0:
@@ -556,7 +649,7 @@ class GUI:
             self.errorLegend.config(state="disabled")
         elif WithErrors.get() == 1:
             self.errorColourLabel.config(state="normal")
-            self.errorColourButton.config(state="normal", background=ColourConvert(errorColour))
+            self.errorColourButton.config(state="normal", background=ColourConvert(buttonColours["errorBar"]))
             self.errorLegend.config(state="normal")
         self.legendCheck()
 
@@ -593,12 +686,16 @@ class GUI:
         self.PlotMenu.add_command(label="Reset Limits",command=self.ResetLimits)
         self.PlotMenu.add_command(label="Reset Colours", command=self.ResetColours)
         self.PlotMenu.add_command(label="Reset Legend", command=self.ResetLegend)
+        self.PlotMenu.add_command(label="Reset Elements", command=self.ResetElements)
         self.menu.add_cascade(label="Plot",menu=self.PlotMenu)
 
 class PlotElement:
     def __init__(self, root, name, type):
         self.name = name
         self.type = type
+        self.colour = (0,0,0)
+        self.xPos = None
+        self.yPos = None
         #TODO check for the element type, and then store the contents of each element data piece, such as equation, lenght of line etc.
 
 

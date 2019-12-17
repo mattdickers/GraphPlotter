@@ -33,35 +33,36 @@
     <session id="-1756114184">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="34" />
+          <entry key="project.closed" value="45" />
           <entry key="project.open.time.14" value="1" />
-          <entry key="project.open.time.5" value="16" />
-          <entry key="project.open.time.6" value="16" />
-          <entry key="project.opened" value="33" />
+          <entry key="project.open.time.4" value="3" />
+          <entry key="project.open.time.5" value="21" />
+          <entry key="project.open.time.6" value="19" />
+          <entry key="project.opened" value="44" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="PNG" value="1" />
           <entry key="png" value="2" />
-          <entry key="py" value="18" />
+          <entry key="py" value="20" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Image" value="3" />
-          <entry key="Python" value="18" />
+          <entry key="Python" value="20" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="145" />
-          <entry key="py" value="20767" />
+          <entry key="py" value="22814" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="20912" />
+          <entry key="Python" value="22959" />
         </counts>
       </usages-collector>
     </session>
@@ -71,17 +72,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GraphPlotter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="414" column="63" lean-forward="true" selection-start-line="414" selection-start-column="63" selection-end-line="414" selection-end-column="63" />
+            <state relative-caret-position="482">
+              <caret line="632" column="36" lean-forward="true" selection-start-line="632" selection-start-column="36" selection-end-line="632" selection-end-column="36" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <marker date="1570750931221" expanded="true" signature="14510:14828" ph="..." />
-                <marker date="1570750931221" expanded="true" signature="18609:18610" ph="..." />
-                <marker date="1570750931221" expanded="true" signature="21174:21187" ph="..." />
-                <marker date="1570750931221" expanded="true" signature="21600:21606" ph="..." />
-                <marker date="1570750931221" expanded="true" signature="21634:21727" ph="..." />
-                <marker date="1570750931221" expanded="true" signature="22959:23004" ph="..." />
-                <marker date="1570750931221" expanded="true" signature="23153:23195" ph="..." />
+                <marker date="1576542150058" expanded="true" signature="29717:30204" ph="..." />
               </folding>
             </state>
           </provider>
@@ -98,24 +93,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Tk</find>
-      <find>def adva</find>
-      <find>ADVANCED</find>
-      <find>OPTIONS</find>
-      <find>tk.</find>
-      <find>root.upd</find>
-      <find>elemetsDr</find>
-      <find>advancedB</find>
-      <find>advancedButton</find>
-      <find>advanced</find>
-      <find>dataSelect</find>
-      <find>addPlotElement</find>
-      <find>elementNames</find>
-      <find>plot element</find>
-      <find>Select Plot Element</find>
-      <find>Create New Plot</find>
-      <find>.get</find>
-      <find>error</find>
       <find>messagebox</find>
       <find>answer</find>
       <find>elements</find>
@@ -128,6 +105,24 @@
       <find>self.func</find>
       <find>self.elementName</find>
       <find>elementNames.append</find>
+      <find>menu</find>
+      <find>Axes</find>
+      <find>width</find>
+      <find>xLimit</find>
+      <find>xLim</find>
+      <find>log</find>
+      <find>Log</find>
+      <find>a =</find>
+      <find>plot</find>
+      <find>save</find>
+      <find>.get</find>
+      <find>selectedElement</find>
+      <find>colour</find>
+      <find>buttoncolour</find>
+      <find>lineColourButton</find>
+      <find>lineColour</find>
+      <find>errorBarCheck</find>
+      <find>.name</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -138,6 +133,7 @@
       <list>
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/ImageAnalyserGUI.py" />
+        <option value="$PROJECT_DIR$/../University Stuff/Year 2/Labs/Rutherford Scattering/Graph.py" />
         <option value="$PROJECT_DIR$/GraphPlotter.py" />
       </list>
     </option>
@@ -149,10 +145,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="416" />
-    <option name="y" value="-13" />
-    <option name="width" value="1400" />
-    <option name="height" value="1000" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="616" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -201,6 +197,28 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.GraphPlotter">
+    <configuration name="Graph" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="GraphPlotter" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\mattd\Documents\GraphPlotter\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../University Stuff/Year 2/Labs/Rutherford Scattering" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../University Stuff/Year 2/Labs/Rutherford Scattering/Graph.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="GraphPlotter" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GraphPlotter" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -290,10 +308,12 @@
       <item itemvalue="Python.GraphPlotter" />
       <item itemvalue="Python.ImageAnalyserGUI" />
       <item itemvalue="Python.test" />
+      <item itemvalue="Python.Graph" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.GraphPlotter" />
+        <item itemvalue="Python.Graph" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.ImageAnalyserGUI" />
       </list>
@@ -325,7 +345,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16204691" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18550107" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -340,7 +360,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.329718" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" x="708" y="115" width="935" height="655" id="Python Console" order="12" type="WINDOWED" weight="0.329718" />
+      <window_info anchor="bottom" x="820" y="221" width="994" height="651" id="Python Console" order="12" type="WINDOWED" weight="0.329718" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -416,6 +436,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.png.png" />
+    <entry file="file://$PROJECT_DIR$/../University Stuff/Year 2/Labs/Rutherford Scattering/Graph.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="40" column="10" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="299">
@@ -425,17 +452,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GraphPlotter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="414" column="63" lean-forward="true" selection-start-line="414" selection-start-column="63" selection-end-line="414" selection-end-column="63" />
+        <state relative-caret-position="482">
+          <caret line="632" column="36" lean-forward="true" selection-start-line="632" selection-start-column="36" selection-end-line="632" selection-end-column="36" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <marker date="1570750931221" expanded="true" signature="14510:14828" ph="..." />
-            <marker date="1570750931221" expanded="true" signature="18609:18610" ph="..." />
-            <marker date="1570750931221" expanded="true" signature="21174:21187" ph="..." />
-            <marker date="1570750931221" expanded="true" signature="21600:21606" ph="..." />
-            <marker date="1570750931221" expanded="true" signature="21634:21727" ph="..." />
-            <marker date="1570750931221" expanded="true" signature="22959:23004" ph="..." />
-            <marker date="1570750931221" expanded="true" signature="23153:23195" ph="..." />
+            <marker date="1576542150058" expanded="true" signature="29717:30204" ph="..." />
           </folding>
         </state>
       </provider>
