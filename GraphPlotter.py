@@ -204,7 +204,7 @@ class GUI:
         self.lineColourLabel.grid(column=0, row=13, columnspan=2, padx=(0, 100))
 
         self.lineColourButton = Button(self.inputFrame, width=3, background = ColourConvert(buttonColours["line"]), borderwidth=1, activebackground=ColourConvert(buttonColours["line"]), relief="flat")
-        self.lineColourButton.config(command=lambda: self.updateButtonColour(self.lineColourButton, "line"))
+        self.lineColourButton.config(command=lambda: self.updateButtonColour(self.lineColourButton, "line", False))
         self.lineColourButton.grid(column=1, row=13, columnspan=2, padx=(100,0),sticky=W)
 
         global lineStyle
@@ -217,7 +217,7 @@ class GUI:
         self.errorColourLabel.grid(column=0, row=14, columnspan=2, padx=(0, 100), pady=(5,0))
 
         self.errorColourButton = Button(self.inputFrame, width=3, background = ColourConvert((160,160,160)), borderwidth=1, activebackground=ColourConvert(buttonColours["errorBar"]), relief="flat")
-        self.errorColourButton.config(command=lambda: self.updateButtonColour(self.errorColourButton, "errorBar"))
+        self.errorColourButton.config(command=lambda: self.updateButtonColour(self.errorColourButton, "errorBar", False))
         self.errorColourButton.grid(column=1, row=14, columnspan=2, padx=(100,0), sticky=W, pady=(5,0))
 
         global ErrorLegend
@@ -410,7 +410,7 @@ class GUI:
         selectInfo = Label(instructionsWindow,text="\nIncludes Errors:\nDefines if the CSV file has error bar data.\nIf so, must be in 3rd and 4th columns.")
         selectInfo.grid(column=0, row=0)
 
-        circleInfo = Label(instructionsWindow,text="\nx and y Limis:\nMust be of the form 'x1,x2' or 'y1,y2'.")
+        circleInfo = Label(instructionsWindow,text="\nx and y Limits:\nMust be of the form 'x1,x2' or 'y1,y2'.")
         circleInfo.grid(column=0, row=1)
 
         closeButton = ttk.Button(instructionsWindow, text="Close", command=instructionsWindow.destroy)
@@ -428,10 +428,10 @@ class GUI:
             advanced = True
             root.geometry("1135x505")
             self.advancedButton.config(text="Hide Advanced Settings", width=21.5)
-            self.advancedFrame = Frame(self.content, height=500, width=250, bg="red", background=ColourConvert((240,240,240)))
-            self.elementFrame = Frame(self.content, height=425, width=187, background=ColourConvert((240,240,240)))
-            self.advancedFrame.grid(column=1, row=1, padx=(0, 70), pady=(0,405), sticky=E)
-            self.elementFrame.grid(column=1, row=1, padx=(0, 70), pady=(75,0))
+            self.advancedFrame = Frame(self.content, height=200, width=287, bg="red", background=ColourConvert((240,240,240)))
+            self.elementFrame = Frame(self.content, height=200, width=287, background=ColourConvert((240,240,240)))
+            self.advancedFrame.grid(column=1, row=1, padx=(0, 70), pady=(0,405))
+            self.elementFrame.grid(column=1, row=1, padx=(0, 70), pady=(85,0), sticky=N)
 
             self.ElementsTitle = Label(self.advancedFrame, text="Select Plot Element:")
             self.ElementsTitle.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 5))
@@ -475,7 +475,7 @@ class GUI:
 
         if self.selectedElement.get() == "Select Element":
             self.noElements = Label(self.elementFrame, text="No Plot Element Selected")
-            self.noElements.grid(column=0, row=0)
+            self.noElements.grid(column=0, row=0, pady=(150,0))
 
     def updateDropdownList(self):
         menu = self.ElementsDropdown["menu"]
@@ -486,7 +486,8 @@ class GUI:
 
     def createPlotElement(self):
         self.clearElementFrame()
-        self.elementFrame.grid_configure(pady=(0, 220))
+        self.elementFrame.grid_configure(pady=(85, 0))
+
         # New Element:
         self.newElementLabel = Label(self.elementFrame, text="Create New Plot Element:")
         self.newElementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(10, 5), padx=(0, 147))
@@ -563,59 +564,82 @@ class GUI:
         element = elements[self.selectedElement.get()]
         self.elementUIload[element.type]()
 
+    def basicElementOutline(self, elementName):
+        self.elementLabel = Label(self.elementFrame, text=elementName+str(":"))
+        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(10, 5), padx=(0, 205))
+
+        hidden = IntVar()
+        self.hidden = ttk.Checkbutton(self.elementFrame, text="Hidden", variable=hidden)
+        self.hidden.grid(column=1, row=0, pady=(5, 5))
+
+        self.elementName = Label(self.elementFrame, text="Name:")
+        self.elementName.grid(column=0, row=1, pady=(0, 5))
+
+        self.elementNameText = Label(self.elementFrame, text=self.selectedElement.get())
+        self.elementNameText.grid(column=1, row=1, pady=(0, 5))
+
+        self.elementLabelLineX = Label(self.elementFrame, text="x Position:")
+        self.elementLabelLineX.grid(column=0, row=2, columnspan=2, padx=(0, 150), pady=(0, 5))
+
+        global elementLineX
+        elementLineX = StringVar()
+        self.elementLineEntryX = ttk.Entry(self.elementFrame, width=16, textvariable=elementLineX)
+        self.elementLineEntryX.grid(column=1, row=2, pady=(0, 5))
+
+        self.elementLabelLineY = Label(self.elementFrame, text="y Position:")
+        self.elementLabelLineY.grid(column=0, row=3, columnspan=2, padx=(0, 150), pady=(0, 5))
+
+        global elementLineY
+        elementLineY = StringVar()
+        self.elementLineEntryY = ttk.Entry(self.elementFrame, width=16, textvariable=elementLineY)
+        self.elementLineEntryY.grid(column=1, row=3, pady=(0, 5))
+
     def elementData(self):
         self.elementLabel = Label(self.elementFrame, text="Data Element:")
-        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 75), padx=(0, 205))
+        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 0), padx=(0, 205))
 
     def elementEquation(self):
         self.elementLabel = Label(self.elementFrame, text="Equation Plot:")
-        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 75), padx=(0, 205))
+        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 0), padx=(0, 205))
 
     def elementLine(self):
-        self.elementLabel = Label(self.elementFrame, text="Line Element:")
-        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 75), padx=(0, 205))
+        self.basicElementOutline("Line Element")
 
     def elementText(self):
-        self.elementLabel = Label(self.elementFrame, text="Text Element:")
-        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(10, 5), padx=(0, 147))
+        self.basicElementOutline("Text Element")
 
-        self.elementName = Label(self.elementFrame, text="Name:")
-        self.elementName.grid(column=0, row=2, columnspan=2, padx=(0, 150))
+        self.elementTextLabel = Label(self.elementFrame, text="Text:")
+        self.elementTextLabel.grid(column=0, row=4, pady=(0, 5))
 
-        self.elementNameText = Label(self.elementFrame, text=self.selectedElement.get())
-        self.elementNameText.grid(column=1, row=2, columnspan=2, padx=(0, 0), sticky=W)
+        global text
+        text = StringVar()
+        self.elementText = ttk.Entry(self.elementFrame, width=16, textvariable=text)
+        self.elementText.grid(column=1, row=4, pady=(0, 5))
 
-        self.elementLabelText = Label(self.elementFrame, text="Text:")
-        self.elementLabelText.grid(column=0, row=3, columnspan=2, padx=(0, 150), pady=(5, 5))
+        self.elementTextColourLabel = Label(self.elementFrame, text="Text Style:")
+        self.elementTextColourLabel.grid(column=0, row=5, pady=(0, 5))
 
-        global elementText
-        elementText = StringVar()
-        self.elementTextEntry = ttk.Entry(self.elementFrame, width=16, textvariable=elementText)
-        self.elementTextEntry.grid(column=1, row=3, columnspan=2, padx=(0, 0), sticky=W)
-
-        self.elementLabelTextX = Label(self.elementFrame, text="x Position:")
-        self.elementLabelTextX.grid(column=0, row=4, columnspan=2, padx=(0, 150))
-
-        global elementTextX
-        elementTextX = StringVar()
-        self.elementTextEntryX = ttk.Entry(self.elementFrame, width=16, textvariable=elementTextX)
-        self.elementTextEntryX.grid(column=1, row=4, columnspan=2, padx=(0, 0), sticky=W)
-
-        self.elementLabelTextY = Label(self.elementFrame, text="y Position:")
-        self.elementLabelTextY.grid(column=0, row=5, columnspan=2, padx=(0, 150), pady=(5, 5))
-
-        global elementTextY
-        elementTextY = StringVar()
-        self.elementTextEntryY = ttk.Entry(self.elementFrame, width=16, textvariable=elementTextY)
-        self.elementTextEntryY.grid(column=1, row=5, columnspan=2, padx=(0, 0), sticky=W)
-
-        self.elementTextColourButton = Button(self.inputFrame, width=3, background=ColourConvert(buttonColours["line"]),
-                                       borderwidth=1, activebackground=ColourConvert(buttonColours["line"]),
+        self.elementTextColour = Button(self.elementFrame, width=3, background=ColourConvert(buttonColours["text"]),
+                                       borderwidth=1, activebackground=ColourConvert(buttonColours["text"]),
                                        relief="flat")
-        self.elementTextColourButton.config(command=lambda: self.updateButtonColour(self.elementTextColourButton, "line"))
-        self.elementTextColourButton.grid(column=1, row=13, columnspan=2, padx=(100, 0), sticky=W)
+        self.elementTextColour.config(command=lambda: self.updateButtonColour(self.elementTextColour, "text", False))
+        self.elementTextColour.grid(column=1, row=5, pady=(0,5), sticky=W, padx=(27, 0))
+        #TODO update to to True when element check implimented
 
+        global textStyle
+        textStyle = StringVar()
+        textStyle.set("Select")
+        self.textStyleDrop = ttk.OptionMenu(self.elementFrame, textStyle, "Normal", *["Normal", "Bold", "Italic", "Underline"])
+        self.textStyleDrop.grid(column=1, row=5, pady=(0, 5), sticky=W, columnspan=2, padx=(60, 0))
 
+        self.elementTextSizeLabel = Label(self.elementFrame, text="Text Size:")
+        self.elementTextSizeLabel.grid(column=0, row=6, pady=(0, 5))
+
+        global TextSize
+        TextSize = StringVar()
+        TextSize.set("12")
+        self.elementTextSize = ttk.Entry(self.elementFrame, width=16, textvariable=TextSize)
+        self.elementTextSize.grid(column=1, row=6, pady=(0, 5))
 
     def elementFuncFit(self):
         self.elementLabel = Label(self.elementFrame, text="Function Fit:")
@@ -693,6 +717,7 @@ class PlotElement:
     def __init__(self, root, name, type):
         self.name = name
         self.type = type
+        self.hidden = False
         self.colour = (0,0,0)
         self.xPos = None
         self.yPos = None
