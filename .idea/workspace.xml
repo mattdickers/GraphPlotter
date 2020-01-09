@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98b122b8-1f6b-4d32-b00f-e4bdec512a48" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GraphPlotter.py" beforeDir="false" afterPath="$PROJECT_DIR$/GraphPlotter.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,12 +32,12 @@
     <session id="-1756114184">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="47" />
+          <entry key="project.closed" value="48" />
           <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.4" value="3" />
           <entry key="project.open.time.5" value="22" />
-          <entry key="project.open.time.6" value="20" />
-          <entry key="project.opened" value="46" />
+          <entry key="project.open.time.6" value="21" />
+          <entry key="project.opened" value="47" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -57,12 +56,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="145" />
-          <entry key="py" value="24724" />
+          <entry key="py" value="26265" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="24869" />
+          <entry key="Python" value="26410" />
         </counts>
       </usages-collector>
     </session>
@@ -72,13 +71,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GraphPlotter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="890">
-              <caret line="641" column="63" selection-start-line="641" selection-start-column="63" selection-end-line="641" selection-end-column="63" />
+            <state relative-caret-position="364">
+              <caret line="578" column="48" selection-start-line="578" selection-start-column="48" selection-end-line="578" selection-end-column="48" />
+              <caret line="579" column="48" selection-start-line="579" selection-start-column="48" selection-end-line="579" selection-end-column="48" />
+              <caret line="580" column="46" selection-start-line="580" selection-start-column="46" selection-end-line="580" selection-end-column="46" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <marker date="1578501673576" expanded="true" signature="26345:27790" ph="..." />
-                <marker date="1578501673576" expanded="true" signature="28300:30099" ph="..." />
-                <marker date="1578501673576" expanded="true" signature="30637:31124" ph="..." />
+                <marker date="1578600983951" expanded="true" signature="26361:27385" ph="..." />
+                <marker date="1578600983951" expanded="true" signature="27428:27437" ph="..." />
+                <marker date="1578600983951" expanded="true" signature="27428:28826" ph="..." />
+                <marker date="1578600983951" expanded="true" signature="31946:33745" ph="..." />
+                <marker date="1578600983951" expanded="true" signature="34284:34771" ph="..." />
               </folding>
             </state>
           </provider>
@@ -95,15 +98,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Axes</find>
-      <find>width</find>
-      <find>xLimit</find>
-      <find>xLim</find>
-      <find>Log</find>
       <find>a =</find>
       <find>plot</find>
       <find>save</find>
-      <find>.get</find>
       <find>selectedElement</find>
       <find>buttoncolour</find>
       <find>lineColourButton</find>
@@ -112,7 +109,6 @@
       <find>.name</find>
       <find>elementFrame</find>
       <find>No</find>
-      <find>log</find>
       <find>create new</find>
       <find>frame</find>
       <find>Frame(</find>
@@ -125,6 +121,13 @@
       <find>def updateB</find>
       <find>self.drop</find>
       <find>textStyle</find>
+      <find>log</find>
+      <find>lim</find>
+      <find>.get</find>
+      <find>Tk()</find>
+      <find>import tkin</find>
+      <find>value</find>
+      <find>select type</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -158,6 +161,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -169,7 +173,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -347,7 +350,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18976545" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19189766" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -362,7 +365,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.329718" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" x="463" y="194" width="994" height="651" id="Python Console" order="12" type="WINDOWED" weight="0.329718" />
+      <window_info anchor="bottom" x="629" y="286" width="987" height="652" id="Python Console" order="12" type="WINDOWED" weight="0.329718" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -454,13 +457,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GraphPlotter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="890">
-          <caret line="641" column="63" selection-start-line="641" selection-start-column="63" selection-end-line="641" selection-end-column="63" />
+        <state relative-caret-position="364">
+          <caret line="578" column="48" selection-start-line="578" selection-start-column="48" selection-end-line="578" selection-end-column="48" />
+          <caret line="579" column="48" selection-start-line="579" selection-start-column="48" selection-end-line="579" selection-end-column="48" />
+          <caret line="580" column="46" selection-start-line="580" selection-start-column="46" selection-end-line="580" selection-end-column="46" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <marker date="1578501673576" expanded="true" signature="26345:27790" ph="..." />
-            <marker date="1578501673576" expanded="true" signature="28300:30099" ph="..." />
-            <marker date="1578501673576" expanded="true" signature="30637:31124" ph="..." />
+            <marker date="1578600983951" expanded="true" signature="26361:27385" ph="..." />
+            <marker date="1578600983951" expanded="true" signature="27428:27437" ph="..." />
+            <marker date="1578600983951" expanded="true" signature="27428:28826" ph="..." />
+            <marker date="1578600983951" expanded="true" signature="31946:33745" ph="..." />
+            <marker date="1578600983951" expanded="true" signature="34284:34771" ph="..." />
           </folding>
         </state>
       </provider>

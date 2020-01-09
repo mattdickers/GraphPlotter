@@ -28,7 +28,7 @@ elementNames = []
 elementTypes = ["Data", "Plot Equation", "Line", "Text", "Fit Function", "MultiPlot"]
 
 global buttonColours
-buttonColours = {"line":(0, 0, 0), "errorBar":(0, 0, 255), "text":(0, 0, 0)}
+buttonColours = {"line":(0, 0, 0), "errorBar":(0, 0, 255), "text":(0, 0, 0), "eline":(0, 0, 0)}
 lineStylesDict = {"─":"-", "•":".", ".":",", "┄":"--"}
 
 def animateGraph(interval):
@@ -564,6 +564,29 @@ class GUI:
         element = elements[self.selectedElement.get()]
         self.elementUIload[element.type]()
 
+    def lineElementEntryUpdate(self, value):
+        if value == "Horizontal":
+            self.lineXLabel.config(state="active")
+            self.lineXstart.config(state="active")
+            self.lineXend.config(state="active")
+            self.lineYLabel.config(state="disabled")
+            self.lineYstart.config(state="disabled")
+            self.lineYend.config(state="disabled")
+        elif value == "Vertical":
+            self.lineXLabel.config(state="disabled")
+            self.lineXstart.config(state="disabled")
+            self.lineXend.config(state="disabled")
+            self.lineYLabel.config(state="active")
+            self.lineYstart.config(state="active")
+            self.lineYend.config(state="active")
+        elif value == "Points":
+            self.lineYLabel.config(state="active")
+            self.lineYstart.config(state="active")
+            self.lineYend.config(state="active")
+            self.lineXLabel.config(state="active")
+            self.lineXstart.config(state="active")
+            self.lineXend.config(state="active")
+
     def basicElementOutline(self, elementName):
         self.elementLabel = Label(self.elementFrame, text=elementName+str(":"))
         self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(10, 5), padx=(0, 205))
@@ -581,18 +604,19 @@ class GUI:
         self.elementLabelLineX = Label(self.elementFrame, text="x Position:")
         self.elementLabelLineX.grid(column=0, row=2, columnspan=2, padx=(0, 150), pady=(0, 5))
 
-        global elementLineX
-        elementLineX = StringVar()
-        self.elementLineEntryX = ttk.Entry(self.elementFrame, width=16, textvariable=elementLineX)
-        self.elementLineEntryX.grid(column=1, row=2, pady=(0, 5))
+        global elementX
+        elementX = StringVar()
+        self.elementEntryX = ttk.Entry(self.elementFrame, width=16, textvariable=elementX)
+        self.elementEntryX.grid(column=1, row=2, pady=(0, 5))
 
-        self.elementLabelLineY = Label(self.elementFrame, text="y Position:")
-        self.elementLabelLineY.grid(column=0, row=3, columnspan=2, padx=(0, 150), pady=(0, 5))
+        self.elementLabelY = Label(self.elementFrame, text="y Position:")
+        self.elementLabelY.grid(column=0, row=3, columnspan=2, padx=(0, 150), pady=(0, 5))
 
-        global elementLineY
-        elementLineY = StringVar()
-        self.elementLineEntryY = ttk.Entry(self.elementFrame, width=16, textvariable=elementLineY)
-        self.elementLineEntryY.grid(column=1, row=3, pady=(0, 5))
+        global elementY
+        elementY = StringVar()
+        self.elementEntryY = ttk.Entry(self.elementFrame, width=16, textvariable=elementY)
+        self.elementEntryY.grid(column=1, row=3, pady=(0, 5))
+
 
     def elementData(self):
         self.elementLabel = Label(self.elementFrame, text="Data Element:")
@@ -604,6 +628,58 @@ class GUI:
 
     def elementLine(self):
         self.basicElementOutline("Line Element")
+
+        self.elementLineTypeLabel = Label(self.elementFrame, text="Line Type:")
+        self.elementLineTypeLabel.grid(column=0, row=4, pady=(0, 5))
+
+        global lineType
+        lineType = StringVar(value="Select")
+        lineType.set("Select")
+        self.lineTypeDrop = ttk.OptionMenu(self.elementFrame, lineType, "Select Type",
+                                            *["Horizontal", "Vertical", "Points"], command=self.lineElementEntryUpdate)
+        self.lineTypeDrop.grid(column=1, row=4, pady=(0, 5))
+
+        self.lineXLabel = Label(self.elementFrame, text="x Start/End Points:", state="disabled")
+        self.lineXLabel.grid(column=0, row=5, pady=(0, 5))
+
+        global startX
+        startX = StringVar()
+        self.lineXstart = ttk.Entry(self.elementFrame, width=7, textvariable=startX, state="disabled")
+        self.lineXstart.grid(column=1, row=5, pady=(0, 5), padx=(0,55))
+
+        global endX
+        endX = StringVar()
+        self.lineXend = ttk.Entry(self.elementFrame, width=7, textvariable=endX, state="disabled")
+        self.lineXend.grid(column=1, row=5, pady=(0, 5), padx=(55, 0))
+
+        self.lineYLabel = Label(self.elementFrame, text="y Start/End Points:", state="disabled")
+        self.lineYLabel.grid(column=0, row=6, pady=(0, 5))
+
+        global startY
+        startY = StringVar()
+        self.lineYstart = ttk.Entry(self.elementFrame, width=7, textvariable=startY, state="disabled")
+        self.lineYstart.grid(column=1, row=6, pady=(0, 5), padx=(0, 55))
+
+        global endY
+        endY = StringVar()
+        self.lineYend = ttk.Entry(self.elementFrame, width=7, textvariable=endY, state="disabled")
+        self.lineYend.grid(column=1, row=6, pady=(0, 5), padx=(55, 0))
+
+        self.lineStyelLabel = Label(self.elementFrame, text="Line Style:")
+        self.lineStyelLabel.grid(column=0, row=7, pady=(0, 5))
+
+        self.elementLineColour = Button(self.elementFrame, width=3, background=ColourConvert(buttonColours["eline"]),
+                                        borderwidth=1, activebackground=ColourConvert(buttonColours["eline"]),
+                                        relief="flat")
+        self.elementLineColour.config(command=lambda: self.updateButtonColour(self.elementLineColour, "eline", False))
+        self.elementLineColour.grid(column=1, row=7, pady=(0, 5), sticky=W, padx=(27, 0))
+
+        global elineStyle
+        elineStyle = StringVar()
+        elineStyle.set("Select")
+        self.lineDrop = ttk.OptionMenu(self.elementFrame, elineStyle, "─", *["─", "┄"])
+        self.lineDrop.grid(column=1, row=7, padx=(60, 0), pady=(0, 5))
+
 
     def elementText(self):
         self.basicElementOutline("Text Element")
@@ -648,6 +724,7 @@ class GUI:
     def elementMulti(self):
         self.elementLabel = Label(self.elementFrame, text="MultiPlot:")
         self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 75), padx=(0, 215))
+
 
     def updateButtonColour(self, button, function, isElement):
         if not isElement:
