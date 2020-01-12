@@ -28,7 +28,7 @@ elementNames = []
 elementTypes = ["Data", "Plot Equation", "Line", "Text", "Fit Function", "MultiPlot"]
 
 global buttonColours
-buttonColours = {"line":(0, 0, 0), "errorBar":(0, 0, 255), "text":(0, 0, 0), "eline":(0, 0, 0)}
+buttonColours = {"line":(0, 0, 0), "errorBar":(0, 0, 255), "text":(0, 0, 0), "eline":(0, 0, 0), "eqnline":(0, 0, 0)}
 lineStylesDict = {"─":"-", "•":".", ".":",", "┄":"--"}
 
 def animateGraph(interval):
@@ -428,9 +428,9 @@ class GUI:
             advanced = True
             root.geometry("1135x505")
             self.advancedButton.config(text="Hide Advanced Settings", width=21.5)
-            self.advancedFrame = Frame(self.content, height=200, width=287, bg="red", background=ColourConvert((240,240,240)))
-            self.elementFrame = Frame(self.content, height=200, width=287, background=ColourConvert((240,240,240)))
-            self.advancedFrame.grid(column=1, row=1, padx=(0, 70), pady=(0,405))
+            self.advancedFrame = Frame(self.content, height=200, width=287, bg="red", background=ColourConvert((240,0,0)))
+            self.elementFrame = Frame(self.content, height=200, width=287, background=ColourConvert((0,240,0)))
+            self.advancedFrame.grid(column=1, row=1, padx=(0, 70), pady=(0,405), sticky=W)
             self.elementFrame.grid(column=1, row=1, padx=(0, 70), pady=(85,0), sticky=N)
 
             self.ElementsTitle = Label(self.advancedFrame, text="Select Plot Element:")
@@ -452,7 +452,7 @@ class GUI:
             self.ElementRemove.grid(column=2, row=1)
 
             self.statsFrame = Frame(self.content, height=100, width = 250, background=ColourConvert((240,240,240)))
-            self.statsFrame.grid(column=1, row=1, padx=(0, 70), pady=(300, 0))
+            self.statsFrame.grid(column=1, row=1, padx=(0, 70), pady=(300, 0), sticky=W)
 
             self.statsLabel = Label(self.statsFrame, text="Plot Statistics:")
             self.statsLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(10, 5), padx=(0, 210))
@@ -619,12 +619,42 @@ class GUI:
 
 
     def elementData(self):
-        self.elementLabel = Label(self.elementFrame, text="Data Element:")
-        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 0), padx=(0, 205))
+        self.basicElementOutline("Data Element")
 
     def elementEquation(self):
-        self.elementLabel = Label(self.elementFrame, text="Equation Plot:")
-        self.elementLabel.grid(column=0, row=0, columnspan=2, sticky=W, pady=(0, 0), padx=(0, 205))
+        self.basicElementOutline("Equation Element")
+
+        self.elementEqnLabel = Label(self.elementFrame, text="Equation:")
+        self.elementEqnLabel.grid(column=0, row=4, pady=(0, 5))
+
+        global eqn
+        eqn = StringVar(value="y=")
+        self.elementEqn = ttk.Entry(self.elementFrame, width=16, textvariable=eqn)
+        self.elementEqn.grid(column=1, row=4, pady=(0, 5))
+
+        self.fill = Label(self.elementFrame, text="")
+        self.fill.grid(column=0, row=5, pady=(0 ,5))
+
+        self.fill = Label(self.elementFrame, text="")
+        self.fill.grid(column=0, row=6, pady=(0, 5))
+
+        self.fill = Label(self.elementFrame, text="")
+        self.fill.grid(column=0, row=7, pady=(0, 5))
+
+        self.eqnLineStyelLabel = Label(self.elementFrame, text="Line Style:")
+        self.eqnLineStyelLabel.grid(column=0, row=8, pady=(0, 5))
+
+        self.eqnLineColour = Button(self.elementFrame, width=3, background=ColourConvert(buttonColours["eqnline"]),
+                                        borderwidth=1, activebackground=ColourConvert(buttonColours["eqnline"]),
+                                        relief="flat")
+        self.eqnLineColour.config(command=lambda: self.updateButtonColour(self.elementLineColour, "eqnline", False))
+        self.eqnLineColour.grid(column=1, row=8, pady=(0, 5), sticky=W, padx=(27, 0))
+
+        global eqnlineStyle
+        eqnlineStyle = StringVar()
+        eqnlineStyle.set("Select")
+        self.eqnLineDrop = ttk.OptionMenu(self.elementFrame, eqnlineStyle, "─", *["─","•",".","┄"])
+        self.eqnLineDrop.grid(column=1, row=8, padx=(60, 0), pady=(0, 5))
 
     def elementLine(self):
         self.basicElementOutline("Line Element")
@@ -712,8 +742,7 @@ class GUI:
         self.elementTextSizeLabel.grid(column=0, row=6, pady=(0, 5))
 
         global TextSize
-        TextSize = StringVar()
-        TextSize.set("12")
+        TextSize = StringVar(value="12")
         self.elementTextSize = ttk.Entry(self.elementFrame, width=16, textvariable=TextSize)
         self.elementTextSize.grid(column=1, row=6, pady=(0, 5))
 
