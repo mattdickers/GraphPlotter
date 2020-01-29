@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98b122b8-1f6b-4d32-b00f-e4bdec512a48" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GraphPlotter.py" beforeDir="false" afterPath="$PROJECT_DIR$/GraphPlotter.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,12 +33,12 @@
     <session id="-1756114184">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="49" />
+          <entry key="project.closed" value="50" />
           <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.4" value="3" />
           <entry key="project.open.time.5" value="22" />
-          <entry key="project.open.time.6" value="22" />
-          <entry key="project.opened" value="48" />
+          <entry key="project.open.time.6" value="24" />
+          <entry key="project.opened" value="50" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -56,12 +57,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="145" />
-          <entry key="py" value="26924" />
+          <entry key="py" value="26925" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="27069" />
+          <entry key="Python" value="27070" />
         </counts>
       </usages-collector>
     </session>
@@ -71,15 +72,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GraphPlotter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3086">
-              <caret line="431" column="108" selection-start-line="431" selection-start-column="108" selection-end-line="431" selection-end-column="108" />
+            <state relative-caret-position="177">
+              <caret line="298" column="38" selection-start-line="298" selection-start-column="16" selection-end-line="298" selection-end-column="38" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <marker date="1578788027037" expanded="true" signature="26394:27418" ph="..." />
-                <marker date="1578788027037" expanded="true" signature="27461:27470" ph="..." />
-                <marker date="1578788027037" expanded="true" signature="27461:28859" ph="..." />
-                <marker date="1578788027037" expanded="true" signature="33297:35079" ph="..." />
-                <marker date="1578788027037" expanded="true" signature="35618:36105" ph="..." />
+                <marker date="1578857157603" expanded="true" signature="26427:27451" ph="..." />
+                <marker date="1578857157603" expanded="true" signature="27494:27503" ph="..." />
+                <marker date="1578857157603" expanded="true" signature="27494:28892" ph="..." />
+                <marker date="1578857157603" expanded="true" signature="33330:35112" ph="..." />
+                <marker date="1578857157603" expanded="true" signature="35651:36138" ph="..." />
               </folding>
             </state>
           </provider>
@@ -96,9 +97,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>a =</find>
-      <find>plot</find>
-      <find>save</find>
       <find>selectedElement</find>
       <find>buttoncolour</find>
       <find>lineColourButton</find>
@@ -126,6 +124,9 @@
       <find>import tkin</find>
       <find>value</find>
       <find>select type</find>
+      <find>.config</find>
+      <find>self.dataSelect</find>
+      <find>self.dataSelect.config</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -345,10 +346,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19402985" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19894099" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -363,7 +363,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.329718" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" x="629" y="286" width="987" height="652" id="Python Console" order="12" type="WINDOWED" weight="0.329718" />
+      <window_info anchor="bottom" x="582" y="145" width="201" height="438" id="Python Console" order="12" type="WINDOWED" weight="0.329718" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -453,24 +453,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Downloads/usetex.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1880">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Downloads/usetex.py" />
     <entry file="file://$PROJECT_DIR$/GraphPlotter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3086">
-          <caret line="431" column="108" selection-start-line="431" selection-start-column="108" selection-end-line="431" selection-end-column="108" />
+        <state relative-caret-position="177">
+          <caret line="298" column="38" selection-start-line="298" selection-start-column="16" selection-end-line="298" selection-end-column="38" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <marker date="1578788027037" expanded="true" signature="26394:27418" ph="..." />
-            <marker date="1578788027037" expanded="true" signature="27461:27470" ph="..." />
-            <marker date="1578788027037" expanded="true" signature="27461:28859" ph="..." />
-            <marker date="1578788027037" expanded="true" signature="33297:35079" ph="..." />
-            <marker date="1578788027037" expanded="true" signature="35618:36105" ph="..." />
+            <marker date="1578857157603" expanded="true" signature="26427:27451" ph="..." />
+            <marker date="1578857157603" expanded="true" signature="27494:27503" ph="..." />
+            <marker date="1578857157603" expanded="true" signature="27494:28892" ph="..." />
+            <marker date="1578857157603" expanded="true" signature="33330:35112" ph="..." />
+            <marker date="1578857157603" expanded="true" signature="35651:36138" ph="..." />
           </folding>
         </state>
       </provider>

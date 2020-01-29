@@ -6,6 +6,7 @@ import os
 
 import matplotlib
 import matplotlib.pyplot as plt
+plt.rc('mathtext', fontset="cm")
 matplotlib.use("TkAgg")
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -312,56 +313,59 @@ class GUI:
 
     def Save(self):
         try:
-            xs
             filePath = asksaveasfilename(title="Save Graph", filetypes=(("PNG and SVG", "*.png"), ("All files", "*")))
-            pngFile = filePath + ".png"
-            svgFile = filePath + ".svg"
+            if filePath !="":
+                pngFile = filePath + ".png"
+                svgFile = filePath + ".svg"
 
-            plt.cla()
-            if XLog.get() == 1 and YLog.get() == 1:
-                plt.loglog(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
-                         label=DataLegendEntry.get())
-                if WithErrors.get() == 1:
-                    plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
-                               color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
-            elif XLog.get() == 1:
-                plt.semilogx(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                plt.cla()
+                if XLog.get() == 1 and YLog.get() == 1:
+                    plt.loglog(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                             label=DataLegendEntry.get())
+                    if WithErrors.get() == 1:
+                        plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                                   color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+                elif XLog.get() == 1:
+                    plt.semilogx(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                               label=DataLegendEntry.get())
+                    if WithErrors.get() == 1:
+                        plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                                   color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+                elif YLog.get() == 1:
+                    plt.semilogy(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
+                               label=DataLegendEntry.get())
+                    if WithErrors.get() == 1:
+                        plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                                   color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+                else:
+                    plt.plot(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
                            label=DataLegendEntry.get())
-                if WithErrors.get() == 1:
-                    plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
-                               color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
-            elif YLog.get() == 1:
-                plt.semilogy(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
-                           label=DataLegendEntry.get())
-                if WithErrors.get() == 1:
-                    plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
-                               color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+                    if WithErrors.get() == 1:
+                        plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
+                                   color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
+                plt.title(TitleEntry.get())
+                plt.xlabel(xEntry.get())
+                plt.ylabel(yEntry.get())
+                xLim, yLim = ConvertLimits()
+                if len(xLim) == 2:
+                    plt.xlim(xLim[0], xLim[1])
+                if len(yLim) == 2:
+                    plt.ylim(yLim[0], yLim[1])
+                if WithErrors.get() == 1 and ErrorLegend.get() == 1:
+                    plt.legend()
+
+                zip = zipfile.ZipFile(pngFile.replace(".png", "")+".zip", mode='w')
+                plt.savefig(pngFile)
+                plt.savefig(svgFile)
+                zip.write(pngFile, os.path.basename(pngFile))
+                zip.write(svgFile, os.path.basename(svgFile))
+                os.remove(pngFile)
+                os.remove(svgFile)
+                tkinter.messagebox.showinfo("Graph Saved", "The graph was successfully saved.")
+                zip.close()
             else:
-                plt.plot(xs, ys, lineStylesDict[lineStyle.get()], color=RGBtoFloat(buttonColours["line"]),
-                       label=DataLegendEntry.get())
-                if WithErrors.get() == 1:
-                    plt.errorbar(xs, ys, xerr=xErr, yerr=yErr, capsize=2, linestyle="none",
-                               color=RGBtoFloat(buttonColours["errorBar"]), label=ErrorLegendEntry.get())
-            plt.title(TitleEntry.get())
-            plt.xlabel(xEntry.get())
-            plt.ylabel(yEntry.get())
-            xLim, yLim = ConvertLimits()
-            if len(xLim) == 2:
-                plt.xlim(xLim[0], xLim[1])
-            if len(yLim) == 2:
-                plt.ylim(yLim[0], yLim[1])
-            if WithErrors.get() == 1 and ErrorLegend.get() == 1:
-                plt.legend()
-
-            zip = zipfile.ZipFile(pngFile.replace(".png", "")+".zip", mode='w')
-            plt.savefig(pngFile)
-            plt.savefig(svgFile)
-            zip.write(pngFile, os.path.basename(pngFile))
-            zip.write(svgFile, os.path.basename(svgFile))
-            os.remove(pngFile)
-            os.remove(svgFile)
-            tkinter.messagebox.showinfo("Graph Saved", "The graph was successfully saved.")
-            zip.close()
+                tkinter.messagebox.showerror("Save Error",
+                                             "There is no file name. Please provide a file name and try again.")
         except NameError:
             tkinter.messagebox.showerror("Save Error",
                                          "No graph has been plotted. Please plot a graph and try again.")
