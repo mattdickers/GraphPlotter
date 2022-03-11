@@ -6,12 +6,14 @@ import os
 
 import matplotlib
 import matplotlib.pyplot as plt
+plt.rc('mathtext', fontset="cm")
 matplotlib.use("TkAgg")
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import matplotlib.animation as animation
 
+from tkinter import *
 from tkinter import ttk
 from tkinter.filedialog import *
 import tkinter.messagebox
