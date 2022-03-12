@@ -314,10 +314,8 @@ class GUI:
 
     def Save(self):
         try:
-            filePath = asksaveasfilename(title="Save Graph", filetypes=(("PNG and SVG", "*.png"), ("All files", "*")))
+            filePath = asksaveasfilename(title="Save Graph",defaultextension=".*", filetypes=(("PNG", "*.png"), ("PDF", "*.pdf"), ("All files", "*")))
             if filePath !="":
-                pngFile = filePath + ".png"
-                svgFile = filePath + ".svg"
 
                 plt.cla()
                 if XLog.get() == 1 and YLog.get() == 1:
@@ -355,15 +353,8 @@ class GUI:
                 if WithErrors.get() == 1 and ErrorLegend.get() == 1:
                     plt.legend()
 
-                zip = zipfile.ZipFile(pngFile.replace(".png", "")+".zip", mode='w')
-                plt.savefig(pngFile)
-                plt.savefig(svgFile)
-                zip.write(pngFile, os.path.basename(pngFile))
-                zip.write(svgFile, os.path.basename(svgFile))
-                os.remove(pngFile)
-                os.remove(svgFile)
+                plt.savefig(filePath)
                 tkinter.messagebox.showinfo("Graph Saved", "The graph was successfully saved.")
-                zip.close()
             else:
                 tkinter.messagebox.showerror("Save Error",
                                              "There is no file name. Please provide a file name and try again.")
