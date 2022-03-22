@@ -9,6 +9,6 @@ Basic Features:
  - Add error bars and legends
  - Full RGB support and line styles
  - Live graph preview
- - Support for vector graphic (SVG) plots
+ - Support for PDF plotting
 
-Advanced features coming soon.
+Currently reworking how plotting works to allow for easier plotting of multiple data sets and other plot elements.
